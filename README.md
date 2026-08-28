@@ -193,3 +193,4 @@ future-fork integration work.
 Bug reports and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md)
 for development, verification, and release instructions. Please report security
 issues according to [SECURITY.md](SECURITY.md), not in a public issue.
+Participation is governed by our [Code of Conduct](CODE_OF_CONDUCT.md).
