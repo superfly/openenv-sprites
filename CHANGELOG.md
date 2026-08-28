@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0
+## 0.2.0 - 2026-08-28
 
 - Harden fresh-Sprite provisioning, exact source revision resolution, frozen
   dependency installation, readiness diagnostics, and bounded cleanup retries.

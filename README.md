@@ -38,10 +38,16 @@ return a prepared fork without changing the OpenEnv-facing lifecycle.
 
 ## Install and run
 
-Until the first PyPI release, install directly from GitHub:
+Install from PyPI with `uv`:
 
 ```console
-uv add "openenv-sprites @ git+https://github.com/superfly/openenv-sprites"
+uv add openenv-sprites
+```
+
+Or with `pip`:
+
+```console
+pip install openenv-sprites
 ```
 
 Then add or inject the client package for the desired environment, for example:
