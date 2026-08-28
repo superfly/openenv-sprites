@@ -9,6 +9,17 @@ description = "An experimental OpenEnv runtime provider backed by Fly.io Sprites
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
+keywords = [
+    "agents",
+    "huggingface",
+    "openenv",
+    "remote-execution",
+    "sandbox",
+    "sprites",
+]
+authors = [
+    {name = "Sprites Team"},
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -30,7 +41,15 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "ruff>=0.14.0",
+    "twine>=6.0",
 ]
+
+[project.urls]
+Homepage = "https://sprites.dev"
+Documentation = "https://github.com/superfly/openenv-sprites#readme"
+Repository = "https://github.com/superfly/openenv-sprites"
+Issues = "https://github.com/superfly/openenv-sprites/issues"
+Changelog = "https://github.com/superfly/openenv-sprites/blob/main/CHANGELOG.md"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/openenv_sprites"]

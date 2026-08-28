@@ -1,0 +1,60 @@
+name: Bug report
+description: Report reproducible incorrect behavior in openenv-sprites.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not include Sprites tokens, environment credentials, or undisclosed
+        security vulnerabilities. Use the security contact for sensitive reports.
+  - type: input
+    id: version
+    attributes:
+      label: openenv-sprites version or commit
+      placeholder: 0.2.0 or a commit SHA
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: 3.14.1
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OpenEnv environment
+      placeholder: hf://openenv/coding_env@revision
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the observed and expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the smallest safe example that reproduces the problem.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted diagnostics
+      description: Remove tokens, credentials, private URLs, and sensitive data.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials and sensitive information from this report.
+          required: true

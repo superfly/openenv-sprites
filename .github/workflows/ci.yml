@@ -3,24 +3,88 @@ name: CI
 on:
   pull_request:
   push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
   test:
+    name: Python ${{ matrix.python-version }}
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
       - run: uv sync --extra dev --locked
-      - run: uv run ruff check .
       - run: uv run pytest
+
+  minimum-dependencies:
+    name: Minimum dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          python-version: "3.10"
+          enable-cache: true
+      - name: Test declared dependency floors
+        run: >-
+          uv run --isolated --python 3.10
+          --with-editable .
+          --with pytest
+          --with openenv==0.4.1
+          --with sprites-py==0.5.0
+          --with websockets==15.0.1
+          pytest
+
+  quality:
+    name: Quality and package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          python-version: "3.14"
+          enable-cache: true
+      - run: uv sync --extra dev --locked
+      - run: uv run ruff check .
       - run: uv build
+      - run: uv run twine check dist/*
+
+  required:
+    name: required
+    if: always()
+    needs:
+      - test
+      - minimum-dependencies
+      - quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm required jobs passed
+        env:
+          TEST_RESULT: ${{ needs.test.result }}
+          MINIMUM_RESULT: ${{ needs.minimum-dependencies.result }}
+          QUALITY_RESULT: ${{ needs.quality.result }}
+        run: |
+          test "$TEST_RESULT" = success
+          test "$MINIMUM_RESULT" = success
+          test "$QUALITY_RESULT" = success

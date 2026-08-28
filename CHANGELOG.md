@@ -8,6 +8,8 @@
   loopback WebSocket bridge.
 - Add Sprite resource configuration, safe command overrides, lifecycle timing,
   concurrent fresh-lifecycle coverage, typed package metadata, and CI.
+- Add open-source contribution and security policies, dependency monitoring,
+  pinned workflow dependencies, and PyPI Trusted Publishing automation.
 - Preserve an allocation seam for future fork-backed startup without adding a
   pre-provisioned pool.
 

@@ -1,9 +1,15 @@
 # OpenEnv on Sprites
 
+[![CI](https://github.com/superfly/openenv-sprites/actions/workflows/ci.yml/badge.svg)](https://github.com/superfly/openenv-sprites/actions/workflows/ci.yml)
+
 `openenv-sprites` is an experimental OpenEnv `ContainerProvider` backed by
 [Fly.io Sprites](https://sprites.dev/). It provides a fresh, private Sprite for
 each environment lifecycle; it does not maintain an idle pool and does not
 depend on Sprite forking or cross-Sprite checkpoint restore.
+
+> [!IMPORTANT]
+> This project is an alpha integration under active development. Its API and
+> operational behavior may change between minor releases.
 
 The provider has been exercised with the OpenEnv Echo and Coding environments,
 including two concurrent Coding lifecycles. In that run both environments
@@ -32,10 +38,10 @@ return a prepared fork without changing the OpenEnv-facing lifecycle.
 
 ## Install and run
 
-From this checkout, install this package and its development dependencies:
+Until the first PyPI release, install directly from GitHub:
 
 ```console
-uv sync --extra dev
+uv add "openenv-sprites @ git+https://github.com/superfly/openenv-sprites"
 ```
 
 Then add or inject the client package for the desired environment, for example:
@@ -104,6 +110,11 @@ capability path, binds only to `127.0.0.1`, and injects the bearer token only on
 the upstream connection. The Python SDK does not yet expose mint/revoke methods
 for restricted tokens, so token provisioning remains the caller's responsibility.
 
+Environment source and its dependencies execute inside the Sprite. Only run
+sources you trust, and assume they can read every value supplied through
+`env_vars`. Do not put credentials in source URLs or command arguments. See
+[the security policy](SECURITY.md) for private vulnerability reporting.
+
 ## Configuration
 
 The common constructor options are:
@@ -133,9 +144,9 @@ explicit `{workers}` placeholder.
 
 Clone, installer, dependency, bridge, and readiness timeouts are separately
 configurable; cleanup has bounded retry and backoff controls. `provider.timings`
-and `provider.diagnostics`
-return defensive copies and never intentionally contain supplied credentials or
-environment-variable values. Health response bodies are excluded unless
+and `provider.diagnostics` return defensive copies and never intentionally
+contain supplied credentials or environment-variable values. Health response
+bodies are excluded unless
 `include_health_body_in_diagnostics=True` is explicitly selected.
 
 ## Examples
@@ -176,3 +187,9 @@ All commands require `SPRITES_API_TOKEN` in the environment.
 See [Hardening and upstream work](docs/hardening.md) for the production threat
 model, operational behavior, and the remaining `sprites-api`, `sprites-py`, and
 future-fork integration work.
+
+## Contributing
+
+Bug reports and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md)
+for development, verification, and release instructions. Please report security
+issues according to [SECURITY.md](SECURITY.md), not in a public issue.

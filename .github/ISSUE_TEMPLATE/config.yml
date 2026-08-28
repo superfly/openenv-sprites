@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://fly.io/docs/security/
+    about: Report vulnerabilities privately to the Fly.io security team.
+  - name: Sprites documentation
+    url: https://sprites.dev/
+    about: Review Sprites product documentation and operational guidance.
